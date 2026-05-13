@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+backend/bin/
+backend/lib/
+backend/include/
+backend/pyvenv.cfg
+
+# Uploads (user photos)
+backend/uploads/
+
+# Database
+database/*.db
+
+# Node
+node_modules/
+frontend/build/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/

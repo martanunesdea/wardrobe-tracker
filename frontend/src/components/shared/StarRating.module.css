@@ -1,0 +1,42 @@
+/* StarRating.module.css */
+.stars { display: inline-flex; gap: 1px; }
+.star {
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 1;
+  cursor: default;
+  transition: transform 0.1s;
+}
+button.star { cursor: pointer; }
+button.star:hover { transform: scale(1.2); }
+
+.filled { color: var(--star-color, #f59e0b); }
+.empty  { color: var(--border, #374151); }
+
+.sm .star { font-size: 0.75rem; }
+.md .star { font-size: 1rem; }
+.lg .star { font-size: 1.3rem; }
+
+/* RatingBar */
+.ratingBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ratingTrack {
+  height: 6px;
+  background: var(--surface-2, #1f2937);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.ratingFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+.ratingLabel {
+  font-size: 0.69rem;
+  color: var(--text-muted, #9ca3af);
+  min-width: 28px;
+}
