@@ -1,32 +1,37 @@
-app = "wardrobe-app"
-primary_region = "lhr"
+# fly.toml app configuration file generated for wardrobe-tracker on 2026-05-24T10:53:08Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'wardrobe-tracker'
+primary_region = 'lhr'
 
 [build]
 
 [env]
-  PORT = "8000"
-  FLASK_DEBUG = "true"
-  DB_PATH = "/data/wardrobe.db"
-  UPLOAD_FOLDER = "/data/uploads"
+  DB_PATH = '/data/wardrobe.db'
+  FLASK_DEBUG = 'true'
+  PORT = '8000'
+  UPLOAD_FOLDER = '/data/uploads'
+
+[[mounts]]
+  source = 'wardrobe_data'
+  destination = '/data'
 
 [http_service]
-  internal_port = 8000
+  internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
 
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  timeout = "5s"
-  path = "/api/health"
-
-[mounts]
-  source = "wardrobe_data"
-  destination = "/data"
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/api/health'
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "256mb"
+  size = 'shared-cpu-1x'
+  memory = '256mb'
