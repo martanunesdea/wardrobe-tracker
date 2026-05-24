@@ -28,7 +28,7 @@ limiter = Limiter(key_func=get_remote_address, default_limits=["200 per hour"])
 
 
 def create_app() -> Flask:
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder=None)
     limiter.init_app(app)
 
     app.config["MAX_CONTENT_LENGTH"] = int(

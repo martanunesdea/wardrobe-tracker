@@ -1,11 +1,11 @@
-app = "wardrobe-app"
+app = "wardrobe-tracker"
 primary_region = "lhr"
 
 [build]
 
 [env]
   PORT = "8000"
-  FLASK_DEBUG = "true"
+  FLASK_DEBUG = "false"
   DB_PATH = "/data/wardrobe.db"
   UPLOAD_FOLDER = "/data/uploads"
 
