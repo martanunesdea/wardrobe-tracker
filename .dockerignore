@@ -1,0 +1,22 @@
+**/.git
+**/.gitignore
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/.env
+**/.DS_Store
+
+database/*.db
+backend/uploads/
+
+# Build artifacts
+frontend/build/
+
+# IDE / editor
+**/.vscode
+**/.idea
+**/.cursor
+
+# Plans and docs not needed in image
+*.plan.md
