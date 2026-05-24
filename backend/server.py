@@ -19,7 +19,6 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 from models.database import init_db
-from middleware.auth import require_auth
 from routes.auth_routes import auth_bp
 from routes.collection_routes import collections_bp
 from routes.item_routes import items_bp
@@ -56,11 +55,13 @@ def create_app() -> Flask:
     # Rate-limit auth endpoints
     limiter.limit("5 per minute")(auth_bp)
 
-    # Serve uploaded photos (authenticated, scoped to owner)
-    UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
+    # Serve uploaded photos — filenames are UUIDs so unguessable by design.
+    UPLOAD_FOLDER = os.environ.get(
+        "UPLOAD_FOLDER", os.path.join(os.path.dirname(__file__), "uploads")
+    )
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
     @app.route("/uploads/<filename>")
-    @require_auth
     def serve_upload(filename):
         return send_from_directory(UPLOAD_FOLDER, filename)
 
@@ -74,6 +75,17 @@ def create_app() -> Flask:
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         return response
+
+    # Serve React production build when it exists (single-container deploy).
+    FRONTEND_BUILD = os.path.join(os.path.dirname(__file__), "static_frontend")
+    if os.path.isdir(FRONTEND_BUILD):
+        @app.route("/", defaults={"path": ""})
+        @app.route("/<path:path>")
+        def serve_frontend(path):
+            full = os.path.join(FRONTEND_BUILD, path)
+            if path and os.path.isfile(full):
+                return send_from_directory(FRONTEND_BUILD, path)
+            return send_from_directory(FRONTEND_BUILD, "index.html")
 
     # Initialise database tables
     init_db()

@@ -73,5 +73,48 @@ npm start
 | CORS_ORIGINS | http://localhost:3000 | Comma-separated allowed origins |
 | REACT_APP_API_URL | *(empty — uses proxy)* | API base for frontend |
 
+## Deployment (Fly.io)
+
+The app is configured for single-container deployment on [Fly.io](https://fly.io).
+At build time, React is compiled to static files and served by Flask alongside the API.
+SQLite and uploads live on a persistent volume.
+
+### One-time setup
+
+```bash
+# Install the Fly CLI
+brew install flyctl          # macOS (or see https://fly.io/docs/flyctl/install/)
+
+# Authenticate
+fly auth login
+
+# Create the app (pick a unique name if "wardrobe-app" is taken)
+fly apps create wardrobe-app
+
+# Create a 1 GB persistent volume in London (change region if needed)
+fly volumes create wardrobe_data --size 1 --region lhr
+
+# Set the JWT signing secret
+fly secrets set JWT_SECRET=$(openssl rand -base64 32)
+
+# Deploy
+fly deploy
+```
+
+### Subsequent deploys
+
+```bash
+fly deploy
+```
+
+### Useful commands
+
+```bash
+fly status                    # VM status
+fly logs                      # Live logs
+fly ssh console               # SSH into the running machine
+fly volumes list              # Check volume status
+```
+
 ## Known Technical Debt
 - `react-scripts` 5.0.1 should be upgraded or replaced with Vite (CRA is no longer maintained).

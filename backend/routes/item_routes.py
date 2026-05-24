@@ -14,7 +14,9 @@ from utils.validation import parse_float, parse_int
 
 items_bp = Blueprint("items", __name__, url_prefix="/api/items")
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "../uploads")
+UPLOAD_FOLDER = os.environ.get(
+    "UPLOAD_FOLDER", os.path.join(os.path.dirname(__file__), "../uploads")
+)
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
 
